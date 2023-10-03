@@ -1,0 +1,42 @@
+@font-face {
+    src: url('martian-mono-semi-bold.ttf');
+    font-family: main;
+}
+@keyframes rotating {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+body {
+    background-color: rgb(245, 245, 245);
+    color: rgb(29, 30, 31);
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    font-family: main;
+    overflow: hidden;
+}
+.gear {
+    position: absolute;
+    z-index: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.gear img {
+    width: 45vw;
+    height: 45vw;
+    animation: rotating 5s linear infinite;
+}
+.content {
+    position: fixed;
+    z-index: 1;
+    width: 100vw;
+    height: 100vh;
+    font-size: 4vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
