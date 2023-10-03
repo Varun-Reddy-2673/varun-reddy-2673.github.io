@@ -1,3 +1,3 @@
-# A website about me
+# Me
 
 It is a work in progress.
