@@ -49,11 +49,15 @@
         </style>
     </head>
     <body>
+        <audio id="theme" src="theme.mp3"></audio>
         <div id="text"><p id="content"></p></div>
         <div id="field"></div>
         <div id="bottom"></div>
         <script>
             let sequences = [
+                [
+                    "Turn on your audio, and ensure that you are on a laptop or a desktop. Press Q to get started."
+                ],
                 [
                     "Welcome to Lumon, refiner Jet Z! Your first task is to work on the Weapon Of Mass Destruction file, which is at the brink of completion.",
                     "To sort digits into buckets, hover over the digit (with precision), and press the key corresponding to the bucket you wish to sort the digit into (W for Woe, F for Frolic, M for Malice, and D for Dread)."
@@ -180,6 +184,13 @@
 
             document.addEventListener("keydown", (e) => {
                 let key = e.key;
+
+                if ((key == "q") || (key == "Q")) {
+                    document.getElementById("theme").play();
+                    contentChange(1, 0, 0);
+                    return;
+                }
+
                 const allowed = ["w", "W", "f", "F", "m", "M", "d", "D"];
                 if (!allowed.includes(key)) return;
 
@@ -218,7 +229,7 @@
 
                     if ((totalCount == 400) && !completed) {
                         completed = true;
-                        contentChange(1, 0, 0);
+                        contentChange(2, 0, 0);
                     }
                 }
             });
