@@ -50,9 +50,12 @@
     </head>
     <body>
         <audio id="theme" src="theme.mp3"></audio>
+        <audio id="congrats" src="congrats.mp3"></audio>
+
         <div id="text"><p id="content"></p></div>
         <div id="field"></div>
         <div id="bottom"></div>
+
         <script>
             let sequences = [
                 [
@@ -170,6 +173,7 @@
                     k = 0;
                     j += 1;
                     if (j < sequences[i].length) setTimeout(contentChange, 5000, i, j, k);
+                    else if (i == 2) document.getElementById("congrats").play();
                 } else setTimeout(contentChange, 50, i, j, k);
             }
 
