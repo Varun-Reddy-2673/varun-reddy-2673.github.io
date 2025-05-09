@@ -69,7 +69,7 @@
                     "Congrats on completing the file, refiner Jet Z!",
                     "We at Lumon wish you a very happy 21st birthday and congratulate you on the completion of your apprenticeship (you are no longer a child labourer, yay)!",
                     "We hope that you get an A in Shower Systems in the upcoming semester. :)",
-                    "Now, sit back and listen to some messages that your outie friends have recorded for you. Please enjoy them equally. :)"
+                    "Now, sit back and listen to audio messages (and a video one) that your outie friends have recorded for you. Please enjoy them equally. :)"
                 ]
             ]
 
@@ -167,6 +167,10 @@
 
             const content = document.getElementById("content");
 
+            function exit() {
+                window.location = "congrats.mp4";
+            }
+
             function contentChange(i, j, k) {
                 if (k == 0) content.innerHTML = "";
                 content.innerHTML += sequences[i][j][k];
@@ -175,7 +179,10 @@
                     k = 0;
                     j += 1;
                     if (j < sequences[i].length) setTimeout(contentChange, 5000, i, j, k);
-                    else if (i == 2) document.getElementById("congrats").play();
+                    else if (i == 2) {
+                        document.getElementById("congrats").play();
+                        setTimeout(exit, 36000);
+                    }
                 } else setTimeout(contentChange, 50, i, j, k);
             }
 
