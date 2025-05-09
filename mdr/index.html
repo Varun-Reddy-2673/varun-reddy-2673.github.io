@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>MDR</title>
+        <style>
+            body {
+                background-color: #1d2121;
+                color: #ededed;
+                margin: 0;
+                font-family: sans-serif;
+                overflow: hidden;
+                cursor: pointer;
+            }
+
+            #text {
+                box-sizing: border-box;
+                border-bottom: 2px solid #ededed;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+            }
+
+            .box {
+                width: 40px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                float: left;
+            }
+
+            .bucket {
+                box-sizing: border-box;
+                border-top: 2px solid #ededed;
+                border-left: 1px solid #ededed;
+                border-right: 1px solid #ededed;
+                float: left;
+                text-align: center;
+            }
+
+            .bucket .name {
+                font-size: 20px;
+            }
+
+            .bucket .count {
+                font-size: 30px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="text"><p id="content"></p></div>
+        <div id="field"></div>
+        <div id="bottom"></div>
+        <script>
+            let sequences = [
+                [
+                    "Welcome to Lumon, refiner Jet Z! Your first task is to work on the Cold Harbour file, which is at the brink of completion.",
+                    "To sort digits into buckets, hover over the digit (with precision), and press the key corresponding to the bucket you wish to sort the digit into (W for Woe, F for Frolic, M for Malice, and D for Dread)."
+                ],
+                [
+                    "Congrats on completing the file, refiner Jet Z!",
+                    "We at Lumon wish you a very happy 21st birthday! :)"
+                ]
+            ]
+
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+
+            const text = document.getElementById("text");
+            text.style.height = `${height * 0.1}px`;
+            text.style.fontSize = `${height * 0.1 * 0.2}px`;
+
+            const field = document.getElementById("field");
+
+            field.style.height = `${Math.floor(height * 0.8 / 40) * 40}px`;
+            field.style.paddingTop = `${((height * 0.8) % 40) / 2}px`;
+            field.style.paddingBottom = `${((height * 0.8) % 40) / 2}px`;
+
+            field.style.width = `${Math.floor(width / 40) * 40}px`;
+            field.style.paddingLeft = `${(width % 40) / 2}px`;
+            field.style.paddingRight = `${(width % 40) / 2}px`;
+
+            const bottom = document.getElementById("bottom");
+            bottom.style.height = `${height * 0.1}px`;
+
+            const cols = Math.floor(width / 40);
+            const rows = Math.floor(height * 0.8 / 40);
+            const totalBoxes = cols * rows;
+
+            let tempers = [
+                {name: "Neutral", color: [237, 237, 237], count: 100},
+                {name: "Woe", color: [133, 177, 242], count: 100},
+                {name: "Frolic", color: [250, 244, 42], count: 100},
+                {name: "Malice", color: [237, 109, 109], count: 100},
+                {name: "Dread", color: [115, 186, 119], count: 100}
+            ];
+
+            const boxes = [];
+
+            for (let i = 0; i < totalBoxes; i++) {
+                const box = document.createElement("div");
+                box.className = "box";
+
+                const digit = Math.floor(Math.random() * 10);
+                box.textContent = digit;
+
+                box.dataset.temper = JSON.stringify(tempers[0].name);
+                box.dataset.color = JSON.stringify(tempers[0].color);
+
+                if (Math.random() < 0.02) {
+                    const temperId = Math.floor(Math.random() * 4) + 1;
+                    tempers[temperId].count -= 1;
+                    box.dataset.temper = tempers[temperId].name;
+                    box.dataset.color = JSON.stringify(tempers[temperId].color);
+                }
+
+                field.appendChild(box);
+                boxes.push(box);
+            }
+
+            const buckets = [];
+
+            for (let temper of tempers) {
+                if (temper.name === "Neutral") continue;
+
+                const bucket = document.createElement("div");
+                
+                bucket.className = "bucket";
+                bucket.style.width = `${width * 0.25}px`;
+                bucket.style.height = `${height * 0.1}px`;
+
+                bucket.dataset.name = temper.name;
+                bucket.dataset.count = temper.count;
+
+                const name = document.createElement("p");
+                name.id = temper.name + "-name";
+                name.className = "name";
+                name.innerHTML = temper.name;
+                name.style.width = `${width * 0.25}px`;
+                name.style.margin = `${height * 0.1 * 0.1}px 0 ${height * 0.1 * 0.1}px 0`;
+                name.style.fontSize = `${height * 0.1 * 0.18}px`;
+                name.style.color = `rgb(${temper.color[0]}, ${temper.color[1]}, ${temper.color[2]})`;
+                bucket.appendChild(name);
+
+                const count = document.createElement("p");
+                count.id = temper.name + "-count";
+                count.className = "count";
+                count.innerHTML = temper.count + "%";
+                count.style.width = `${width * 0.25}px`;
+                count.style.margin = `${height * 0.1 * 0.1}px 0 ${height * 0.1 * 0.1}px 0`;
+                count.style.fontSize = `${height * 0.1 * 0.4}px`;
+                bucket.appendChild(count);
+
+                bottom.appendChild(bucket);
+                buckets.push(bucket);
+            }
+
+            const content = document.getElementById("content");
+
+            function contentChange(i, j, k) {
+                if (k == 0) content.innerHTML = "";
+                content.innerHTML += sequences[i][j][k];
+                k += 1;
+                if (k == sequences[i][j].length) {
+                    k = 0;
+                    j += 1;
+                    if (j < sequences[i].length) setTimeout(contentChange, 5000, i, j, k);
+                } else setTimeout(contentChange, 50, i, j, k);
+            }
+
+            contentChange(0, 0, 0);
+
+            let cursorX = 0, cursorY = 0, completed = false;
+
+            document.addEventListener("mousemove", (e) => {
+                cursorX = e.clientX;
+                cursorY = e.clientY;
+            });
+
+            document.addEventListener("keydown", (e) => {
+                let key = e.key;
+                const allowed = ["w", "W", "f", "F", "m", "M", "d", "D"];
+                if (!allowed.includes(key)) return;
+
+                let selectedBox;
+                let closestDist = -1;
+
+                boxes.forEach((box) => {
+                    const rect = box.getBoundingClientRect();
+                    const boxCenterX = rect.left + rect.width / 2;
+                    const boxCenterY = rect.top + rect.height / 2;
+
+                    const dx = boxCenterX - cursorX;
+                    const dy = boxCenterY - cursorY;
+                    const dist = Math.sqrt((dx * dx) + (dy * dy));
+
+                    if ((closestDist == -1) || (dist < closestDist)) {
+                        selectedBox = box;
+                        closestDist = dist;
+                    }
+                });
+
+                if (key.toUpperCase() == selectedBox.dataset.temper[0]) {
+                    let totalCount = 0;
+
+                    buckets.forEach((bucket) => {
+                        if (bucket.dataset.name == selectedBox.dataset.temper) {
+                            bucket.dataset.count = parseInt(bucket.dataset.count) + 1;
+                            document.getElementById(selectedBox.dataset.temper + "-count").innerHTML = bucket.dataset.count + "%";
+                        }
+
+                        totalCount += parseInt(bucket.dataset.count);
+                    });
+
+                    selectedBox.dataset.temper = "Neutral";
+                    selectedBox.dataset.color = JSON.stringify(tempers[0].color);
+
+                    if ((totalCount == 400) && !completed) {
+                        completed = true;
+                        contentChange(1, 0, 0);
+                    }
+                }
+            });
+
+            setInterval(() => {
+                boxes.forEach((box) => {
+                    const rect = box.getBoundingClientRect();
+                    const boxCenterX = rect.left + rect.width / 2;
+                    const boxCenterY = rect.top + rect.height / 2;
+
+                    const dx = boxCenterX - cursorX;
+                    const dy = boxCenterY - cursorY;
+                    const dist = Math.sqrt((dx * dx) + (dy * dy));
+
+                    const size = Math.max(12, 32 - (dist / 10));
+                    box.style.fontSize = `${size}px`;
+
+                    const colorRatio = Math.max(0, 1 - (dist / 320));
+                    const storedColor = JSON.parse(box.dataset.color);
+                    let rgb = [0, 0, 0];
+                    for (let i = 0; i < 3; i++) rgb[i] = (colorRatio * storedColor[i]) + ((1 - colorRatio) * tempers[0].color[i]);
+                    box.style.color = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+                });
+            }, 33);
+        </script>
+    </body>
+</html>
