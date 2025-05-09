@@ -127,7 +127,7 @@
                 const bucket = document.createElement("div");
                 
                 bucket.className = "bucket";
-                bucket.style.width = `${width * 0.25}px`;
+                bucket.style.width = "25%";
                 bucket.style.height = `${height * 0.1}px`;
 
                 bucket.dataset.name = temper.name;
@@ -137,7 +137,7 @@
                 name.id = temper.name + "-name";
                 name.className = "name";
                 name.innerHTML = temper.name;
-                name.style.width = `${width * 0.25}px`;
+                name.style.width = "100%";
                 name.style.margin = `${height * 0.1 * 0.1}px 0 ${height * 0.1 * 0.1}px 0`;
                 name.style.fontSize = `${height * 0.1 * 0.18}px`;
                 name.style.color = `rgb(${temper.color[0]}, ${temper.color[1]}, ${temper.color[2]})`;
@@ -147,7 +147,7 @@
                 count.id = temper.name + "-count";
                 count.className = "count";
                 count.innerHTML = temper.count + "%";
-                count.style.width = `${width * 0.25}px`;
+                count.style.width = "100%";
                 count.style.margin = `${height * 0.1 * 0.1}px 0 ${height * 0.1 * 0.1}px 0`;
                 count.style.fontSize = `${height * 0.1 * 0.4}px`;
                 bucket.appendChild(count);
